@@ -12,7 +12,7 @@
 
 #include "../includes/filler.h"
 
-void    first_call(char *line, t_player *user)
+int     first_call(char *line, t_player *user)
 {
     int i;
 
@@ -32,15 +32,39 @@ void    first_call(char *line, t_player *user)
     return (1);
 }
 
-int main()
+void	ft_skip_line()
+{
+	char *trash;
+
+	get_next_line(1, &trash);
+	ft_strdel(&trash);
+}
+
+void    ft_readSize(char *line, t_player *user)
+{
+    int i;
+
+    i = 0;
+    while(!ft_isalnum(line[i]))
+        ++i;
+    user->sizeF->x = ft_atoi(&line[i]);
+    i = i + ft_numinstr(&line[i]) + 1;
+    user->sizeF->y = ft_atoi(&line[i])
+    ft_strdel(*line);
+    ft_skip_line();
+}
+
+int     main()
 {
     char		*line;
     t_player    user;
 
-    first_call(line);
+    if (!first_call(line))
+        return (0);
     while (get_next_line(1, &line))
     {
-
+        ft_readSize(line, &user);
+        ft_readField();
     }
     return(0);
 }
