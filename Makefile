@@ -23,16 +23,16 @@ BINARY		= $(FILE:.c=.o)
 all: $(NAME)
 
 $(NAME): $(BINARY)
-        @make -C libft
-        @$(CC) -o $(NAME) $(FLAG) $(BINARY) $(LIB)
-        echo "Filler player done"
+	@make -C libft
+	@$(CC) -o $(NAME) $(FLAG) $(BINARY) $(LIB)
+	@echo "Filler player done"
 
 clean:
-    @make clean -C libft
+	@make clean -C libft
 	@rm -f $(BINARY)
 
 fclean: clean
-    @make fclean -C libft
+	@make fclean -C libft
 	@rm -f $(NAME)
 
 re: fclean all
