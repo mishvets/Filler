@@ -141,12 +141,15 @@ int     main()
 {
     char		*line;
     t_player    user;
+	t_coordinate *answer;
 
     line = NULL;
     user.F.start = NULL;
 	int fd = open("../test", O_RDONLY);
     if (!ft_player(line, &user, fd))
         return (1);
+	if (!(answer = (t_coordinate *)malloc(sizeof(t_coordinate))))
+		return (0);
     while (get_next_line(fd, &line))
     {
         ft_readSize(line, &user.sizeM, fd);
@@ -155,8 +158,10 @@ int     main()
         	return(1);
 		if(!ft_readFrag(&user.F.start, &user.F.sizeF, fd))
 			return (1);
-//		if (!ft_find_place_for_frag(user.map, user.F))
-//			return (1);
+		if (!ft_find_place_for_frag(user, answer))
+			ft_printf("0 0\n");
+		else//answer
+			ft_printf("%i %i\n", answer->x, answer->y);
     }
     ft_doublstrdel(&user.map, user.sizeM.y);
     system("leaks Filler -q");
