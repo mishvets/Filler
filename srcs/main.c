@@ -88,7 +88,7 @@ t_fragPoint	*ft_pointaddr(t_fragPoint *alst, t_fragPoint *new)
 	return (alst);
 }
 
-int 	ft_readFrag(t_fragPoint *start, t_coordinate *sizeF, int fd)
+int 	ft_readFrag(t_fragPoint **start, t_coordinate *sizeF, int fd)
 {
 	int			i;
 	int			j;
@@ -96,7 +96,7 @@ int 	ft_readFrag(t_fragPoint *start, t_coordinate *sizeF, int fd)
 	t_fragPoint	*crawler;
 
 	i = 0;
-	crawler = start;
+	crawler = *start;
 	if((get_next_line(fd, &line) < 0))
 		return (0);
 	ft_readSize(line, sizeF, fd);
@@ -113,7 +113,7 @@ int 	ft_readFrag(t_fragPoint *start, t_coordinate *sizeF, int fd)
 			crawler->next = NULL;
 			crawler->point.x = j;
 			crawler->point.y = i;
-			start = ft_pointaddr(start, crawler);
+			*start = ft_pointaddr(*start, crawler);
 			++j;
 		}
 		++i;
@@ -123,7 +123,7 @@ int 	ft_readFrag(t_fragPoint *start, t_coordinate *sizeF, int fd)
 	return (1);
 }
 
-void	ft_doublstrdel(char ***map, int y)
+void	ft_doublstrdel(char ***map, int y) // create singl function
 {
 	int i;
 
@@ -141,11 +141,9 @@ int     main()
 {
     char		*line;
     t_player    user;
-    char 		**map;
-	t_frag		F;
 
     line = NULL;
-    F.start = NULL;
+    user.F.start = NULL;
 	int fd = open("../test", O_RDONLY);
     if (!ft_player(line, &user, fd))
         return (1);
@@ -153,12 +151,14 @@ int     main()
     {
         ft_readSize(line, &user.sizeM, fd);
 		ft_skip_line(fd);
-        if(!ft_readMap(&map, &user.sizeM, fd))
+        if(!ft_readMap(&user.map, &user.sizeM, fd))
         	return(1);
-		if(!ft_readFrag((&F)->start, &F.sizeF, fd))
+		if(!ft_readFrag(&user.F.start, &user.F.sizeF, fd))
 			return (1);
+//		if (!ft_find_place_for_frag(user.map, user.F))
+//			return (1);
     }
-    ft_doublstrdel(&map, user.sizeM.y);
+    ft_doublstrdel(&user.map, user.sizeM.y);
     system("leaks Filler -q");
     return(0);
 }

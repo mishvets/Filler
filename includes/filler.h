@@ -21,12 +21,6 @@ typedef struct      	s_coordinate
 	int 				y;
 }                   	t_coordinate;
 
-typedef struct      	s_player
-{
-    char            	p;
-	t_coordinate		sizeM;
-}                   	t_player;
-
 typedef struct			s_fragPoint
 {
 	t_coordinate		point;
@@ -38,5 +32,15 @@ typedef struct			s_frag
 	t_coordinate		sizeF;
 	t_fragPoint			*start;
 }						t_frag;
+
+typedef struct      	s_player
+{
+	char            	p;
+	t_coordinate		sizeM;
+	char 				**map;
+	t_frag				F;
+}                   	t_player;
+
+int						ft_find_place_for_frag();
 
 #endif //FILLER_FILLER_H

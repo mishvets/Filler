@@ -8,6 +8,6 @@ AUX_SOURCE_DIRECTORY(Libft LIBA)
 add_executable(Filler
         ${LIBA}
         srcs/main.c
-        includes/filler.h)
+        includes/filler.h srcs/find_place_for_frag.c)
 
 link_libraries(./libft/libft.a)
