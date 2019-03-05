@@ -15,6 +15,7 @@
 #include <stdio.h>//
 int fd1;
 
+
 int     ft_player(char *line, t_player *user, int fd)
 {
 //    int i;
