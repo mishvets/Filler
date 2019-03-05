@@ -21,24 +21,28 @@ int	ft_check_frag(t_player user, int map_column, int map_row)
 	crawler = user.F.start;
 	while (crawler)
 	{
-		if ((map_column + crawler->point.x) >= user.sizeM.x
-			|| (map_row + crawler->point.y) >= user.sizeM.y)
-		else if (user.map[map_column + crawler->point.x][map_row + crawler->point.y]
-		== user.p)
+		if ((map_column + crawler->point.x) < user.sizeM.x
+			|| (map_row + crawler->point.y) < user.sizeM.y)
 		{
-			if (overlay)
+			if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] == user.p ||
+					user.map[map_row + crawler->point.y][map_column + crawler->point.x] == ft_tolower(user.p))
+			{
+				if (overlay)
+					return (0);
+				else
+					overlay = 1;
+			}
+			else if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] != '.')
 				return (0);
-			else
-				overlay = 1;
 		}
-		else if (user.map[map_column][map_row] != '.')
-			return (0);
 		crawler = crawler->next;
 	}
+	if (!overlay)
+		return (0);
 	return (1);
 }
 
-int find_place_for_frag(t_player user, t_coordinate *place)
+int ft_find_place_for_frag(t_player user, t_coordinate *place)
 {
 	int map_row;
 	int map_column;
@@ -50,7 +54,7 @@ int find_place_for_frag(t_player user, t_coordinate *place)
 		map_column = 0;
 		while (map_column < user.sizeM.x)
 		{
-			if (user.map[map_column][map_row] == user.p)
+			//if (user.map[map_row][map_column] == user.p || user.map[map_row][map_column] == ft_tolower(user.p))
 				if (ft_check_frag(user, map_column, map_row))
 				{
 					place->x = map_column;
