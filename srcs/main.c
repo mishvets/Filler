@@ -210,6 +210,7 @@ int     main()
     line = NULL;
     user.F.start = NULL;
 	fd1 = open("res.txt", O_RDWR);
+
 //	fd1 = 0;
 //	ft_printf("%d", fd1);
 //	int fd = open("../test", O_RDONLY);
