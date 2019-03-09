@@ -13,7 +13,8 @@
 #include "../includes/filler.h"
 #include <fcntl.h>//
 #include <stdio.h>//
-int fd1;
+
+int fd1;//
 
 
 int     ft_player(char *line, t_player *user, int fd)
@@ -48,7 +49,7 @@ int     ft_player(char *line, t_player *user, int fd)
 	ft_putstr_fd(line, fd1);
 	ft_putstr_fd("\n", fd1);
 	//
-	player = ft_atoi(ft_strstr(line, "$$$ exec p"));
+	player = ft_atoi(line + 10);
 	if (player == 1)
 		user->p = 'O';
 	else if (player == 2)
