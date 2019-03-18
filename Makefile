@@ -16,7 +16,7 @@ CFLAGS 		= -Wall -Wextra -Werror
 HEAD 		= includes/filler.h
 LIB         = libft/libft.a
 
-FILE    	:= srcs/main.c
+FILE    	+= srcs/main.c
 FILE        += srcs/find_place_for_frag.c
 
 BINARY		= $(FILE:.c=.o)
