@@ -21,7 +21,7 @@ int	ft_check_frag(t_player user, int map_column, int map_row)
 	crawler = user.F.start;
 	while (crawler)
 	{
-		if ((map_column + crawler->point.x) < user.sizeM.x
+		if ((map_column + crawler->point.x) < (user.sizeM.x)
 			|| (map_row + crawler->point.y) < user.sizeM.y)
 		{
 			if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] == user.p ||

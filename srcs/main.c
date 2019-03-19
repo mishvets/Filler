@@ -89,7 +89,8 @@ int 	ft_readMap(char ***map, t_coordinate *size, int fd)
 //			return (0);
 		if (get_next_line(fd, &line) < 0)
 			return (0);
-		(*map)[i] = ft_strdup(ft_strchr(line, ' ') + 1);
+//		(*map)[i] = ft_strdup(ft_strchr(line, ' ') + 1);
+		(*map)[i] = ft_strdup(line + 4);
 		ft_strdel(&line);
 		++i;
 	}
@@ -184,7 +185,7 @@ int     main()
 //	fd1 = open("res.txt", O_RDWR);
 //	fd1 = 0;
 //	ft_printf("%d", fd1);
-//	int fd = open("../test", O_RDONLY);
+//	int fd = open("test1", O_RDONLY);
 	int fd = 0;
 
 
@@ -196,19 +197,19 @@ int     main()
     {
     	ft_readSize(line, &user.sizeM);
 		ft_skip_line(fd);
-        if( !ft_readMap(&user.map, &user.sizeM, fd))
+        if (!ft_readMap(&user.map, &user.sizeM, fd))
         	return(1);
 		if (!ft_readFrag(&user.F.start, &user.F.sizeF, fd))
 			return (1);
 		if (!ft_find_place_for_frag(user, answer))//segfault
 			ft_printf("0 0\n");
 		else//answer
-			ft_printf("%i %i\n", answer->y + 2, answer->x);
+			ft_printf("%i %i\n", answer->y, answer->x);
 		ft_doublstrdel(&user.map, user.sizeM.y);
 //		user.F.start = NULL;//LEAKS!!!
 		ft_delFrag(&user.F.start);
 	}
-//    system("leaks Filler -q");
+    system("leaks mshvets.filler -q");
     return(0);
 }
 
