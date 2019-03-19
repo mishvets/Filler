@@ -89,8 +89,8 @@ int 	ft_readMap(char ***map, t_coordinate *size, int fd)
 //			return (0);
 		if (get_next_line(fd, &line) < 0)
 			return (0);
-//		(*map)[i] = ft_strdup(ft_strchr(line, ' ') + 1);
-		(*map)[i] = ft_strdup(line + 4);
+		(*map)[i] = ft_strdup(ft_strchr(line, ' ') + 1);
+//		(*map)[i] = ft_strdup(line + 4);
 		ft_strdel(&line);
 		++i;
 	}
