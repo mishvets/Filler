@@ -41,6 +41,6 @@ typedef struct      	s_player
 	t_frag				F;
 }                   	t_player;
 
-int						ft_find_place_for_frag(t_player user, t_coordinate *place);
+int						ft_find_place_for_frag(t_player user, t_coordinate *place, int fd1);//del fd1
 
 #endif //FILLER_FILLER_H
