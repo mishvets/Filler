@@ -16,14 +16,18 @@ int	ft_check_frag(t_player user, int map_column, int map_row, int fd1)//del fd1
 {
 	t_fragPoint *crawler;
 	int			overlay;
+	int iter = 0; //
 
 	overlay = 0;
 	crawler = user.F.start;
 	ft_putstr_fd("->ft_check_frag - start!\n", fd1);//
 	while (crawler)
 	{
+		ft_putstr_fd("--->crawler - ", fd1);//
+		ft_putstr_fd(ft_itoa(iter++), fd1);//
+		ft_putstr_fd("\n", fd1);//
 		if ((map_column + crawler->point.x) < user.sizeM.x
-			|| (map_row + crawler->point.y) < user.sizeM.y)
+			&& (map_row + crawler->point.y) < user.sizeM.y) // was || !!!!!!!!!!!!!!!!!!!!!!!!!!
 		{
 			if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] == user.p ||
 					user.map[map_row + crawler->point.y][map_column + crawler->point.x] == ft_tolower(user.p))
@@ -36,8 +40,13 @@ int	ft_check_frag(t_player user, int map_column, int map_row, int fd1)//del fd1
 			else if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] != '.')
 				return (0);
 		}
+		else
+			return (0);
 		crawler = crawler->next;
 	}
+	ft_putstr_fd("--->Overlay - ", fd1);//
+	ft_putstr_fd(ft_itoa(overlay), fd1);//
+	ft_putstr_fd("\n", fd1);//
 	if (!overlay)
 		return (0);
 	return (1);
@@ -60,7 +69,7 @@ int ft_find_place_for_frag(t_player user, t_coordinate *place, int fd1)
 		while (map_column < user.sizeM.x)
 		{
 			ft_putstr_fd("->column:", fd1);//
-			ft_putstr_fd(ft_itoa(map_row), fd1);//
+			ft_putstr_fd(ft_itoa(map_column), fd1);//
 			ft_putstr_fd("\n", fd1);//
 			//if (user.map[map_row][map_column] == user.p || user.map[map_row][map_column] == ft_tolower(user.p))
 				if (ft_check_frag(user, map_column, map_row, fd1))//del fd1

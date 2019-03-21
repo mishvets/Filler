@@ -16,14 +16,14 @@
 
 int fd1;//
 
-static char *get_next_line(int fd, char **str)
-{
-	if (fd > 0)
-		;
-	*str = (char *)malloc(sizeof(char) * 1000);
-	gets(*str);
-	return(*str);
-}
+//static char *get_next_line(int fd, char **str)
+//{
+//	if (fd > 0)
+//		;
+//	*str = (char *)malloc(sizeof(char) * 1000);
+//	gets(*str);
+//	return(*str);
+//}
 
 int     ft_player(char *line, t_player *user, int fd)
 {
@@ -66,12 +66,14 @@ void	ft_skip_line(int fd)
 {
 	char *trash;
 
-	get_next_line(fd, &trash);
-	if (!trash)
+	if (!get_next_line(fd, &trash))
 		ft_putstr_fd("No line\n", fd1);
-	ft_putstr_fd(trash, fd1);
-	ft_putstr_fd(",\n", fd1);
-	//ft_strdel(&trash);
+	else
+	{
+		ft_putstr_fd(trash, fd1);
+		ft_putstr_fd(",\n", fd1);
+		ft_strdel(&trash);
+	}
 }
 
 void   ft_readSize(char *line, t_coordinate *size)
@@ -194,7 +196,7 @@ int     main()
 
     line = NULL;
     user.F.start = NULL;
-	fd1 = open("res.txt", O_RDWR);
+	fd1 = open("res.txt", O_WRONLY);
 //	fd1 = 0;
 //	int fd = open("test1", O_RDONLY);
 	int fd = 0;

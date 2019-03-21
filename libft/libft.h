@@ -123,7 +123,7 @@ char				*ft_strlowcase(char *str);
 char				*ft_itoa_base(int n, int base);
 int					ft_sqtr(int nb);
 
-//int					get_next_line(const int fd, char **line);
+int					get_next_line(const int fd, char **line);
 
 int					ft_printf(const char *format, ...);
 char				*ft_strjoinl(char *s1, char *s2);
