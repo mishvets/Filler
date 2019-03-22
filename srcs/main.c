@@ -196,7 +196,7 @@ int     main()
 
     line = NULL;
     user.F.start = NULL;
-	fd1 = open("res.txt", O_WRONLY);
+	fd1 = open("res.txt", O_RDWR);
 //	fd1 = 0;
 //	int fd = open("test1", O_RDONLY);
 	int fd = 0;
@@ -221,7 +221,7 @@ int     main()
 		ft_putstr_fd("ft_readMap - ok!\n", fd1);//
 		if (!ft_readFrag(&user.F.start, &user.F.sizeF, fd))
 			return (1);
-		ft_putstr_fd("ft_readFrag - ok!\n", fd1);//
+//		ft_putstr_fd("ft_readFrag - ok!\n", fd1);//
 //		if (ft_find_place_for_frag(user, answer, fd1))
 //		{
 //			ft_putstr_fd("ft_find_place_for_frag - no place exit!\n", fd1);//
@@ -239,10 +239,10 @@ int     main()
 //		}
 		ft_putstr_fd("ft_find_place_for_frag - ok!\n", fd1);//
 		ft_doublstrdel(&user.map, user.sizeM.y);
-		ft_putstr_fd("ft_doublstdel - ok!\n", fd1);//
+//		ft_putstr_fd("ft_doublstdel - ok!\n", fd1);//
 //		user.F.start = NULL;//LEAKS!!!
 		ft_delFrag(&user.F.start);
-		ft_putstr_fd("ft_delFrag - ok!\n", fd1);//
+//		ft_putstr_fd("ft_delFrag - ok!\n", fd1);//
 		ft_putstr_fd("Iter end\n", fd1);//
 	}
 //    system("leaks mshvets.filler -q");
