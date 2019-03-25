@@ -12,52 +12,141 @@
 
 #include "../includes/filler.h"
 
+unsigned int	func(t_player user, t_coordinate p, t_coordinate limit, int fd1)//del fd1
+{
+	t_coordinate	l1;
+	t_coordinate	l2;
+	t_coordinate	inc;
+	unsigned int	len1;
+	unsigned int	len2;
+
+	ft_putstr_fd("func start\n", fd1);//
+	inc.x = p.x > limit.x ? -1 : 1;
+	inc.y = p.y > limit.y ? -1 : 1;
+	len1 = 1000000;
+	len2 = 1000000;
+	l1.x = p.x - inc.x;
+	l1.y = limit.y;
+	l2.x = limit.x;
+	l2.y = p.y - inc.y;
+	while (l1.x != limit.x || l2.y != limit.y)
+	{
+		if (l1.x != limit.x)
+			l1.x += inc.x;
+		if (l2.y != limit.y)
+			l2.y += inc.y;
+		if (user.map[l1.x][l1.y] == user.opp)
+			len1 = ft_pow((l1.y - p.y), 2) + ft_pow((l1.x - p.x), 2);
+		if (user.map[l2.x][l2.y] == user.opp)
+			len2 = ft_pow((l2.y - p.y), 2) + ft_pow((l2.x - p.x), 2);
+		if (len1 != 1000000 || len2 != 1000000)
+			return (len1 < len2 ? len1 : len2);
+	}
+	return (len1);
+}
+
+unsigned int	ft_func(t_player user, t_coordinate p, t_coordinate	limit, int fd1) // del fd1
+{
+	unsigned int	len_tmp;
+	t_coordinate	inc;
+	t_coordinate	finish;
+
+	ft_putstr_fd("ft_func start\n", fd1);//
+	finish.x = p.x;
+	finish.y = p.y;
+	inc.x = finish.x > limit.x ? -1 : 1;
+	inc.y = finish.y > limit.y ? -1 : 1;
+	len_tmp = 1000000;
+	while (finish.x != limit.x || finish.y != limit.y)
+	{
+		if (finish.x != limit.x)
+			finish.x += inc.x;
+		if (finish.y != limit.y)
+			finish.y += inc.y;
+		if ((len_tmp = func(user, p, finish, fd1)) < 1000000)
+			break;
+	}
+	return (len_tmp);
+}
+
 unsigned int	ft_lenmin(t_player user, int p_column, int p_row, int fd1)//del fd1
 {
-	int				map_row;
-	int				map_column;
 	unsigned int	len_tmp;
 	unsigned int	len;
+	t_coordinate	limit;
+	t_coordinate	p;
 
-	map_row = 0;
+	ft_putstr_fd("ft_lenmin start\n", fd1);//
+	p.x = p_column;
+	p.y = p_row;
 	len = 1000000;
-	while (map_row < user.sizeM.y)
-	{
-		map_column = 0;
-		while (map_column < user.sizeM.x)
-		{
-			if ((user.map[map_row][map_column] != user.p) &&
-				(user.map[map_row][map_column] != '.'))
-			{
-
-				len_tmp = ft_pow((map_row - p_row), 2) + ft_pow((map_column - p_column), 2);
-				ft_putstr_fd("map_row = ", fd1);// у где противник
-				ft_putstr_fd(ft_itoa(map_row), fd1);//
-				ft_putstr_fd("\n", fd1);//
-				ft_putstr_fd("map_column = ", fd1);// х где противник
-				ft_putstr_fd(ft_itoa(map_column), fd1);//
-				ft_putstr_fd("\n", fd1);//
-				ft_putstr_fd("p_row = ", fd1);//map_row + crawler->point.y
-				ft_putstr_fd(ft_itoa(p_row), fd1);//
-				ft_putstr_fd("\n", fd1);//
-				ft_putstr_fd("p_column = ", fd1);//map_column + crawler->point.x
-				ft_putstr_fd(ft_itoa(p_column), fd1);//
-				ft_putstr_fd("\n", fd1);//
-				ft_putstr_fd("len_tmp = ", fd1);//
-				ft_putstr_fd(ft_itoa(len_tmp), fd1);//
-				ft_putstr_fd("\n", fd1);//
-				if (len > len_tmp)
-					len = len_tmp;
-			}
-			++map_column;
-		}
-		++map_row;
-	}
-	ft_putstr_fd("-----------len = ", fd1);//
-	ft_putstr_fd(ft_itoa(len), fd1);//
-	ft_putstr_fd("\n", fd1);//
+	limit.x = 0;
+	limit.y = 0;
+	if (len > (len_tmp = ft_func(user, p, limit, fd1)))
+		len = len_tmp;
+	limit.x = user.sizeM.x;
+	limit.y = 0;
+	if (len > (len_tmp = ft_func(user, p, limit, fd1)))
+		len = len_tmp;
+	limit.x = user.sizeM.x;
+	limit.y = user.sizeM.y;
+	if (len > (len_tmp = ft_func(user, p, limit, fd1)))
+		len = len_tmp;
+	limit.x = 0;
+	limit.y = user.sizeM.y;
+	if (len > (len_tmp = ft_func(user, p, limit, fd1)))
+		len = len_tmp;
+	if (fd1)//
+		;//
 	return (len);
 }
+
+//unsigned int	ft_lenmin(t_player user, int p_column, int p_row, int fd1)//del fd1
+//{
+//	int				map_row;
+//	int				map_column;
+//	unsigned int	len_tmp;
+//	unsigned int	len;
+//
+//	map_row = 0;
+//	len = 1000000;
+//	while (map_row < user.sizeM.y)
+//	{
+//		map_column = 0;
+//		while (map_column < user.sizeM.x)
+//		{
+//			if ((user.map[map_row][map_column] != user.p) &&
+//				(user.map[map_row][map_column] != '.')) // user.map[map_row][map_column] == user.opp
+//			{
+//
+//				len_tmp = ft_pow((map_row - p_row), 2) + ft_pow((map_column - p_column), 2);
+//				ft_putstr_fd("map_row = ", fd1);// у где противник
+//				ft_putstr_fd(ft_itoa(map_row), fd1);//
+//				ft_putstr_fd("\n", fd1);//
+//				ft_putstr_fd("map_column = ", fd1);// х где противник
+//				ft_putstr_fd(ft_itoa(map_column), fd1);//
+//				ft_putstr_fd("\n", fd1);//
+//				ft_putstr_fd("p_row = ", fd1);//map_row + crawler->point.y
+//				ft_putstr_fd(ft_itoa(p_row), fd1);//
+//				ft_putstr_fd("\n", fd1);//
+//				ft_putstr_fd("p_column = ", fd1);//map_column + crawler->point.x
+//				ft_putstr_fd(ft_itoa(p_column), fd1);//
+//				ft_putstr_fd("\n", fd1);//
+//				ft_putstr_fd("len_tmp = ", fd1);//
+//				ft_putstr_fd(ft_itoa(len_tmp), fd1);//
+//				ft_putstr_fd("\n", fd1);//
+//				if (len > len_tmp)
+//					len = len_tmp;
+//			}
+//			++map_column;
+//		}
+//		++map_row;
+//	}
+//	ft_putstr_fd("-----------len = ", fd1);//
+//	ft_putstr_fd(ft_itoa(len), fd1);//
+//	ft_putstr_fd("\n", fd1);//
+//	return (len);
+//}
 
 int	ft_check_frag(t_player user, int map_column, int map_row, unsigned int *len, int fd1)//del fd1
 {

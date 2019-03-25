@@ -36,6 +36,7 @@ typedef struct			s_frag
 typedef struct      	s_player
 {
 	char            	p;
+	char 				opp;
 	t_coordinate		sizeM;
 	char 				**map;
 	t_frag				F;

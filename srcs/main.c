@@ -55,9 +55,15 @@ int     ft_player(char *line, t_player *user, int fd)
         	return (0);
 	player = ft_atoi(line + 10);
 	if (player == 1)
+	{
 		user->p = 'O';
+		user->opp = 'X';
+	}
 	else if (player == 2)
+	{
 		user->p = 'X';
+		user->opp = 'O';
+	}
 	ft_strdel(&line);
     return (1);
 }
