@@ -235,7 +235,7 @@ int     main()
 //		}
 //		else//answer
 //		{
-		ft_find_place_for_frag(user, answer, fd1);
+		ft_find_place_for_frag(user, answer);
 			ft_putstr_fd("y = ", fd1);//
 			ft_putstr_fd(ft_itoa(answer->y), fd1);//
 			ft_putstr_fd(", x = ", fd1);//
