@@ -17,6 +17,7 @@ unsigned int	func(t_player user, t_coordinate p, t_coordinate limit, int fd1)//d
 	t_coordinate	l1;
 	t_coordinate	l2;
 	t_coordinate	inc;
+	t_coordinate	stop;
 	unsigned int	len1;
 	unsigned int	len2;
 
@@ -25,22 +26,67 @@ unsigned int	func(t_player user, t_coordinate p, t_coordinate limit, int fd1)//d
 	inc.y = p.y > limit.y ? -1 : 1;
 	len1 = 1000000;
 	len2 = 1000000;
-	l1.x = p.x - inc.x;
+	l1.x = p.x;
 	l1.y = limit.y;
 	l2.x = limit.x;
-	l2.y = p.y - inc.y;
-	while (l1.x != limit.x || l2.y != limit.y)
+	l2.y = p.y;
+	stop.x = 0;
+	stop.y = 0;
+	ft_putstr_fd("p.x = ", fd1);//
+	ft_putstr_fd(ft_itoa(p.x), fd1);//
+	ft_putstr_fd(", p.y = ", fd1);//
+	ft_putstr_fd(ft_itoa(p.y), fd1);//
+	ft_putstr_fd("\n", fd1);//
+	ft_putstr_fd("limit.x = ", fd1);//
+	ft_putstr_fd(ft_itoa(limit.x), fd1);//
+	ft_putstr_fd(", limit.y = ", fd1);//
+	ft_putstr_fd(ft_itoa(limit.y), fd1);//
+	ft_putstr_fd("\n\n", fd1);//
+	while (!stop.x || !stop.y)
 	{
+		ft_putstr_fd("l1.x = ", fd1);//
+		ft_putstr_fd(ft_itoa(l1.x), fd1);//
+		ft_putstr_fd(", l1.y = ", fd1);//
+		ft_putstr_fd(ft_itoa(l1.y), fd1);//
+		ft_putstr_fd("\n", fd1);//
+		ft_putstr_fd("l2.x = ", fd1);//
+		ft_putstr_fd(ft_itoa(l2.x), fd1);//
+		ft_putstr_fd(", l2.y = ", fd1);//
+		ft_putstr_fd(ft_itoa(l2.y), fd1);//
+		ft_putstr_fd("\n", fd1);//
+		if (user.map[l1.y][l1.x] == user.opp)
+		{
+			ft_putstr_fd("user.map[l1.y][l1.x] - ", fd1);//
+			ft_putstr_fd(&user.map[l1.y][l1.x], fd1);//
+			ft_putstr_fd("\n", fd1);//
+			len1 = ft_pow((l1.y - p.y), 2) + ft_pow((l1.x - p.x), 2);
+		}
+		if (user.map[l2.y][l2.x] == user.opp)
+		{
+			ft_putstr_fd("user.map[l2.y][l2.x] - ", fd1);//
+			ft_putstr_fd(&user.map[l2.y][l2.x], fd1);//
+			ft_putstr_fd("\n", fd1);//
+			len2 = ft_pow((l2.y - p.y), 2) + ft_pow((l2.x - p.x), 2);
+		}
+		if (len1 != 1000000 || len2 != 1000000)
+		{
+			ft_putstr_fd("len1 = ", fd1);
+			ft_putstr_fd(ft_itoa(len1), fd1);//
+			ft_putstr_fd(", len2 = ", fd1);
+			ft_putstr_fd(ft_itoa(len2), fd1);//
+			ft_putstr_fd("\n", fd1);//
+			return (len1 < len2 ? len1 : len2);
+		}
+
 		if (l1.x != limit.x)
 			l1.x += inc.x;
+		else
+			stop.x = 1;
 		if (l2.y != limit.y)
 			l2.y += inc.y;
-		if (user.map[l1.x][l1.y] == user.opp)
-			len1 = ft_pow((l1.y - p.y), 2) + ft_pow((l1.x - p.x), 2);
-		if (user.map[l2.x][l2.y] == user.opp)
-			len2 = ft_pow((l2.y - p.y), 2) + ft_pow((l2.x - p.x), 2);
-		if (len1 != 1000000 || len2 != 1000000)
-			return (len1 < len2 ? len1 : len2);
+		else
+			stop.y = 1;
+		ft_putstr_fd("Next iter\n", fd1);//
 	}
 	return (len1);
 }
@@ -50,24 +96,38 @@ unsigned int	ft_func(t_player user, t_coordinate p, t_coordinate	limit, int fd1)
 	unsigned int	len_tmp;
 	t_coordinate	inc;
 	t_coordinate	finish;
+	t_coordinate	stop;
+
 
 	ft_putstr_fd("ft_func start\n", fd1);//
 	finish.x = p.x;
 	finish.y = p.y;
 	inc.x = finish.x > limit.x ? -1 : 1;
 	inc.y = finish.y > limit.y ? -1 : 1;
+	ft_putstr_fd("limit.x = ", fd1);//
+	ft_putstr_fd(ft_itoa(limit.x), fd1);//
+	ft_putstr_fd(", limit.y = ", fd1);//
+	ft_putstr_fd(ft_itoa(limit.y), fd1);//
+	ft_putstr_fd("\n\n", fd1);//
+	stop.x = 0;
+	stop.y = 0;
 	len_tmp = 1000000;
-	while (finish.x != limit.x || finish.y != limit.y)
+	while (!stop.x || !stop.y)
 	{
-		if (finish.x != limit.x)
-			finish.x += inc.x;
-		if (finish.y != limit.y)
-			finish.y += inc.y;
 		if ((len_tmp = func(user, p, finish, fd1)) < 1000000)
 			break;
+		if (finish.x != limit.x)
+			finish.x += inc.x;
+		else
+			stop.x = 1;
+		if (finish.y != limit.y)
+			finish.y += inc.y;
+		else
+			stop.y = 1;
 	}
 	return (len_tmp);
 }
+
 
 unsigned int	ft_lenmin(t_player user, int p_column, int p_row, int fd1)//del fd1
 {
@@ -79,25 +139,24 @@ unsigned int	ft_lenmin(t_player user, int p_column, int p_row, int fd1)//del fd1
 	ft_putstr_fd("ft_lenmin start\n", fd1);//
 	p.x = p_column;
 	p.y = p_row;
+	ft_putstr_fd(ft_itoa(p.y), fd1);//
 	len = 1000000;
 	limit.x = 0;
 	limit.y = 0;
 	if (len > (len_tmp = ft_func(user, p, limit, fd1)))
 		len = len_tmp;
-	limit.x = user.sizeM.x;
+	limit.x = user.sizeM.x - 1;
 	limit.y = 0;
 	if (len > (len_tmp = ft_func(user, p, limit, fd1)))
 		len = len_tmp;
-	limit.x = user.sizeM.x;
-	limit.y = user.sizeM.y;
+	limit.x = user.sizeM.x - 1;
+	limit.y = user.sizeM.y - 1;
 	if (len > (len_tmp = ft_func(user, p, limit, fd1)))
 		len = len_tmp;
 	limit.x = 0;
-	limit.y = user.sizeM.y;
+	limit.y = user.sizeM.y - 1;
 	if (len > (len_tmp = ft_func(user, p, limit, fd1)))
 		len = len_tmp;
-	if (fd1)//
-		;//
 	return (len);
 }
 
@@ -168,19 +227,27 @@ int	ft_check_frag(t_player user, int map_column, int map_row, unsigned int *len,
 		if ((map_column + crawler->point.x) < user.sizeM.x
 			&& (map_row + crawler->point.y) < user.sizeM.y)
 		{
+			if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] == user.opp)
+				return (0);
 			if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] == user.p ||
-					user.map[map_row + crawler->point.y][map_column + crawler->point.x] == ft_tolower(user.p))
+			user.map[map_row + crawler->point.y][map_column + crawler->point.x] == ft_tolower(user.p))
 			{
 				if (overlay)
 					return (0);
 				else
 					overlay = 1;
 			}
-			else if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] != '.')
-				return (0);
-//			if (*len > (len_tmp = ft_lenmin(user, map_column, map_row)))
-//				*len = len_tmp;
-			*len += ft_lenmin(user, map_column + crawler->point.x, map_row + crawler->point.y, fd1);
+//			if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] == user.p ||
+//					user.map[map_row + crawler->point.y][map_column + crawler->point.x] == ft_tolower(user.p))
+//			{
+//				if (overlay)
+//					return (0);
+//				else
+//					overlay = 1;
+//				*len += ft_lenmin(user, map_column + crawler->point.x, map_row + crawler->point.y, fd1);
+//			}
+//			else if (user.map[map_row + crawler->point.y][map_column + crawler->point.x] != '.')
+//				return (0);
 		}
 		else
 			return (0);
@@ -191,6 +258,12 @@ int	ft_check_frag(t_player user, int map_column, int map_row, unsigned int *len,
 	ft_putstr_fd("\n", fd1);//
 	if (!overlay)
 		return (0);
+	crawler = user.F.start;
+	while (crawler)
+	{
+		*len += ft_lenmin(user, map_column + crawler->point.x, map_row + crawler->point.y, fd1);
+		crawler = crawler->next;
+	}
 	ft_putstr_fd("--->for y = ", fd1);//
 	ft_putstr_fd(ft_itoa(map_row), fd1);//
 	ft_putstr_fd(", x = ", fd1);//

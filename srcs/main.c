@@ -204,7 +204,7 @@ int     main()
     user.F.start = NULL;
 	fd1 = open("res.txt", O_RDWR);
 //	fd1 = 0;
-//	int fd = open("test1", O_RDONLY);
+//	int fd = open("../test1", O_RDONLY);
 	int fd = 0;
 	int iter = 0;
 
