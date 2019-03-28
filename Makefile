@@ -10,33 +10,75 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= mshvets.filler
-CC 			= gcc
-CFLAGS 		= -Wall -Wextra -Werror
+# name of the executable file
+
+NAME		:= mshvets.filler
+
+# project directories
+
+SRC_DIR     = ./src/
+OBJ_DIR     = ./
+INC_DIR     = ./inc/
+LIB_DIR     = ./
+
+# project source files
+
+SRC         := $(SRC_DIR)main.c
+SRC         += $(SRC_DIR)find_place_for_frag.c
+
+# project object files
+
+OBJ		    = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
+
+# libraries
+
+LIBFT       = $(LIBFT_DIR)libft.a
+LIBFT_DIR   := $(LIB_DIR)libft/
+LIBFT_INC   := $(LIBFT_DIR)
+LIBFT_FLAGS := -lft -L $(LIBFT_DIR)
+
+# compilation flags
+
+CC_FLAGS	:= -Wall -Wextra -Werror
+
+# linking flags
+
+LINK_FLAGS  :=   $(LIBFT_FLAGS)
+
+# header flags
+
+HEADER_FLAGS  := -I $(INC_DIR) -I $(LIBFT_INC)
+
+# compiler
+
+CC 			:= gcc
+
 HEAD 		= includes/filler.h
-LIB         = libft/libft.a
 
-FILE    	+= srcs/main.c
-FILE        += srcs/find_place_for_frag.c
-
-BINARY		= $(FILE:.c=.o)
+# rules
 
 all: $(NAME)
 
-$(NAME): $(BINARY)
-	@make -C libft
-	@$(CC) -o $(NAME) $(FLAG) $(BINARY) $(LIB)
+$(NAME): $(LIBFT) $(OBJ)
+	@$(CC) $(OBJ) $(LINK_FLAGS) -o $(NAME)
 	@echo "Filler player done"
 
+$(OBJ_DIR)%.o: %.c
+	@$(CC) -c $< -o $@ $(CC_FLAGS) $(HEADER_FLAGS)
+
+$(LIBFT):
+	@make -C $(LIBFT_DIR)
+
 clean:
-	@make clean -C libft
-	@rm -f $(BINARY)
+	@rm -f $(OBJ)
+	@make clean -C $(LIBFT_DIR)
 
 fclean: clean
-	@make fclean -C libft
 	@rm -f $(NAME)
+	@make fclean -C $(LIBFT_DIR)
 
 re: fclean all
 
 reclean: fclean all
-	@rm -f $(BINARY)
+	@rm -f $(OBJ)
+

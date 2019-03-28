@@ -10,12 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/filler.h"
+#include "../inc/filler.h"
 
 int     ft_player(char *line, t_player *user, int fd)
 {
 	int	player;
-
 
 	if (get_next_line(fd, &line) < 0)
         	return (0);
@@ -157,14 +156,13 @@ void ft_delFrag(t_fragPoint **start)
 
 int     main()
 {
-    char		*line;
-    t_player    user;
-	t_coordinate *answer;
+    char			*line;
+    t_player		user;
+	t_coordinate	*answer;
 
     line = NULL;
     user.F.start = NULL;
 	int fd = 0;
-
     if (!ft_player(line, &user, fd))
         return (1);
 	if (!(answer = (t_coordinate *)malloc(sizeof(t_coordinate))))

@@ -7,7 +7,7 @@ AUX_SOURCE_DIRECTORY(Libft LIBA)
 
 add_executable(mshvets.filler
         ${LIBA}
-        srcs/main.c
-        includes/filler.h srcs/find_place_for_frag.c)
+        src/main.c
+        inc/filler.h src/find_place_for_frag.c)
 
 link_libraries(./libft/libft.a)
