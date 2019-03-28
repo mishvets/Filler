@@ -258,6 +258,7 @@ int	ft_check_frag(t_player user, int map_column, int map_row, unsigned int *len)
 	//ft_putstr_fd("\n");//
 	if (!overlay)
 		return (0);
+//	*len += ft_lenmin(user, map_column, map_row);
 	crawler = user.F.start;
 	while (crawler)
 	{
