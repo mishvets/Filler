@@ -97,6 +97,7 @@ FUNCTIONS	+= printf_int.c
 FUNCTIONS	+= printf_float_double.c
 FUNCTIONS	+= printf_oux.c
 FUNCTIONS	+= ft_check_sign_double.c
+FUNCTIONS	+= ft_doublstrdel.c
 
 BINARY		= $(FUNCTIONS:.c=.o)
 

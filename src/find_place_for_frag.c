@@ -12,105 +12,104 @@
 
 #include "../inc/filler.h"
 
-unsigned int	ft_lenmin(t_player user, int p_col, int p_row)
+static unsigned int	ft_lenmin(t_player user, int p_col, int p_row)
 {
-	int				map_row;
-	int				map_col;
+	t_coordinate	map;
 	unsigned int	len_tmp;
 	unsigned int	len;
 
-	map_row = 0;
+	map.y = 0;
 	len = 100000000;
-	while (map_row < user.sizeM.y)
+	while (map.y < user.size_m.y)
 	{
-		map_col = 0;
-		while (map_col < user.sizeM.x)
+		map.x = 0;
+		while (map.x < user.size_m.x)
 		{
-			if (user.map[map_row][map_col] == user.opp
-			|| user.map[map_row][map_col] == ft_tolower(user.opp))
+			if (user.map[map.y][map.x] == user.opp
+			|| user.map[map.y][map.x] == ft_tolower(user.opp))
 			{
-				len_tmp = ft_pow((map_row - p_row), 2)
-				+ ft_pow((map_col - p_col), 2);
+				len_tmp = ft_pow((map.y - p_row), 2)
+				+ ft_pow((map.x - p_col), 2);
 				if (len > len_tmp)
 					len = len_tmp;
 			}
-			++map_col;
+			++map.x;
 		}
-		++map_row;
+		++map.y;
 	}
 	return (len);
 }
 
-int	ft_check_frag(t_player user, int map_col, int map_row, unsigned int *len)
+static unsigned int	ft_len(t_player user, t_coordinate map)
 {
-	t_fragPoint *crawler;
-	int			overlay;
+	t_frag_point	*crawler;
+	unsigned int	len;
+
+	len = 0;
+	crawler = user.f.start;
+	while (crawler)
+	{
+		len += ft_lenmin(user, map.x + crawler->point.x,
+				map.y + crawler->point.y);
+		crawler = crawler->next;
+	}
+	return (len);
+}
+
+static int			ft_check_frag(t_player u, t_coordinate m, unsigned int *len)
+{
+	t_frag_point	*c;
+	int				overlay;
 
 	overlay = 0;
 	*len = 0;
-	crawler = user.F.start;
-	while (crawler)
+	c = u.f.start;
+	while (c)
 	{
-		if ((map_col + crawler->point.x) < user.sizeM.x
-			&& (map_row + crawler->point.y) < user.sizeM.y)
+		if ((m.x + c->point.x) < u.size_m.x && (m.y + c->point.y) < u.size_m.y)
 		{
-			if (user.map[map_row + crawler->point.y][map_col + crawler->point.x] == user.opp
-			|| user.map[map_row + crawler->point.y][map_col + crawler->point.x]
-			== ft_tolower(user.opp))
+			if (u.map[m.y + c->point.y][m.x + c->point.x] == u.opp
+			|| u.map[m.y + c->point.y][m.x + c->point.x] == ft_tolower(u.opp)
+			|| (u.map[m.y + c->point.y][m.x + c->point.x] == u.p && overlay))
 				return (0);
-			if (user.map[map_row + crawler->point.y]
-			[map_col + crawler->point.x] == user.p)
-			{
-				if (overlay)
-					return (0);
-				else
-					overlay = 1;
-			}
+			if (u.map[m.y + c->point.y][m.x + c->point.x] == u.p)
+				overlay = 1;
 		}
 		else
 			return (0);
-		crawler = crawler->next;
+		c = c->next;
 	}
 	if (!overlay)
 		return (0);
-	crawler = user.F.start;
-	while (crawler)
-	{
-		*len += ft_lenmin(user, map_col + crawler->point.x,
-				map_row + crawler->point.y);
-		crawler = crawler->next;
-	}
+	*len = ft_len(u, m);
 	return (1);
 }
 
-int ft_find_place_for_frag(t_player user, t_coordinate *place)
+int					ft_find_place_for_frag(t_player user, t_coordinate *place)
 {
-	int map_row;
-	int map_col;
-	unsigned int len;
-	unsigned int len_tmp;
+	t_coordinate	map;
+	unsigned int	len;
+	unsigned int	len_tmp;
 
-	map_row = 0;
 	place->x = 0;
 	place->y = 0;
 	len = 100000000;
-	while (map_row < user.sizeM.y)
+	map.y = -1;
+	while (++map.y < user.size_m.y)
 	{
-		map_col = 0;
-		while (map_col < user.sizeM.x)
+		map.x = -1;
+		while (++map.x < user.size_m.x)
 		{
-			if (ft_check_frag(user, map_col, map_row, &len_tmp))
+			if (ft_check_frag(user, map, &len_tmp))
 			{
 				if (len > (len_tmp))
 				{
 					len = len_tmp;
-					place->x = map_col;
-					place->y = map_row;
+					place->x = map.x;
+					place->y = map.y;
 				}
 			}
-			++map_col;
 		}
-		++map_row;
 	}
 	return (1);
 }

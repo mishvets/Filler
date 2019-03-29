@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mshvets <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/29 16:31:50 by mshvets           #+#    #+#             */
-/*   Updated: 2019/02/26 19:20:46 by mshvets          ###   ########.fr       */
+/*   Created: 2019/03/29 17:48:24 by mshvets           #+#    #+#             */
+/*   Updated: 2019/03/29 17:48:26 by mshvets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
+#ifndef LIBFT_H
 
-# define LIBFTPRINTF_H
+# define LIBFT_H
 # define BUFF_SIZE 32
 
 # include <unistd.h>
@@ -122,6 +122,7 @@ char				*ft_strupcase(char *str);
 char				*ft_strlowcase(char *str);
 char				*ft_itoa_base(int n, int base);
 int					ft_sqtr(int nb);
+void				ft_doublstrdel(char ***map, int y);
 
 int					get_next_line(const int fd, char **line);
 

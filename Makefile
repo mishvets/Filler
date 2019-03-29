@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: mshvets <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/10/29 16:47:12 by mshvets           #+#    #+#              #
-#    Updated: 2018/12/12 14:38:22 by mshvets          ###   ########.fr        #
+#    Created: 2019/03/29 17:09:01 by mshvets           #+#    #+#              #
+#    Updated: 2019/03/29 17:09:03 by mshvets          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,57 +17,57 @@ NAME		:= mshvets.filler
 # project directories
 
 SRC_DIR     = ./src/
-OBJ_DIR     = ./
+OBJ_DIR     = ./obj/
 INC_DIR     = ./inc/
 LIB_DIR     = ./
 
 # project source files
 
-SRC         := $(SRC_DIR)main.c
-SRC         += $(SRC_DIR)find_place_for_frag.c
+SRC             := $(SRC_DIR)main.c
+SRC             += $(SRC_DIR)find_place_for_frag.c
+SRC             += $(SRC_DIR)initialisation.c
 
 # project object files
 
-OBJ		    = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
+OBJ		        = $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
 # libraries
 
-LIBFT       = $(LIBFT_DIR)libft.a
-LIBFT_DIR   := $(LIB_DIR)libft/
-LIBFT_INC   := $(LIBFT_DIR)
-LIBFT_FLAGS := -lft -L $(LIBFT_DIR)
+LIB             := $(LIBFT_DIR)libft.a
+LIBFT_DIR       := $(LIB_DIR)libft/
+LIBFT_INC       := $(LIBFT_DIR)
+LIBFT_FLAGS     := -lft -L $(LIBFT_DIR)
 
 # compilation flags
 
-CC_FLAGS	:= -Wall -Wextra -Werror
+CC_FLAGS        := -Wall -Wextra -Werror
 
 # linking flags
 
-LINK_FLAGS  :=   $(LIBFT_FLAGS)
+LINK_FLAGS      := $(LIBFT_FLAGS)
 
 # header flags
 
-HEADER_FLAGS  := -I $(INC_DIR) -I $(LIBFT_INC)
+HEAD            := $(INC_DIR)fillr.h
+HEADER_FLAGS    := -I $(INC_DIR) -I $(LIBFT_INC)
 
 # compiler
 
-CC 			:= gcc
-
-HEAD 		= includes/filler.h
+CC              := gcc
 
 # rules
 
-all: $(NAME)
+all: $(LIB) $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
-	@$(CC) $(OBJ) $(LINK_FLAGS) -o $(NAME)
-	@echo "Filler player done"
+$(NAME): $(OBJ)
+	$(CC) $(OBJ) $(LINK_FLAGS) -o $(NAME)
+	echo "Filler player done"
 
-$(OBJ_DIR)%.o: %.c
-	@$(CC) -c $< -o $@ $(CC_FLAGS) $(HEADER_FLAGS)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+	$(CC) $(CC_FLAGS) -c $< -o $@ $(HEADER_FLAGS)
 
-$(LIBFT):
-	@make -C $(LIBFT_DIR)
+$(LIB):
+	make -C $(LIBFT_DIR)
 
 clean:
 	@rm -f $(OBJ)
@@ -81,4 +81,3 @@ re: fclean all
 
 reclean: fclean all
 	@rm -f $(OBJ)
-
